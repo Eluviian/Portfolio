@@ -1,0 +1,23 @@
+[
+null,
+{"id":1,"expanded":false,"name":"abandoned draft,but don't delete for now","order":9,"parentId":0,"scrollX":810.5,"scrollY":896},
+{"id":2,"expanded":true,"name":"Stage 1 Posiedon","order":1,"parentId":0,"scrollX":810.5,"scrollY":596},
+{"id":3,"expanded":false,"name":"Boss Battle Poseidon","order":6,"parentId":0,"scrollX":810.5,"scrollY":448},
+{"id":4,"expanded":false,"name":"Stage 1 Hades","order":7,"parentId":0,"scrollX":810.5,"scrollY":992},
+{"id":5,"expanded":false,"name":"Stage 2 Hades","order":8,"parentId":0,"scrollX":810.5,"scrollY":498},
+{"id":6,"expanded":false,"name":"Stage 3 Hades","order":19,"parentId":0,"scrollX":811,"scrollY":571},
+{"id":7,"expanded":false,"name":"Stage 2 Poseidon","order":2,"parentId":0,"scrollX":810.5,"scrollY":712},
+{"id":8,"expanded":false,"name":"Stage 3 Poseidon","order":3,"parentId":0,"scrollX":810.5,"scrollY":992},
+{"id":9,"expanded":false,"name":"Stage 4 Poseidon","order":4,"parentId":0,"scrollX":810.5,"scrollY":448},
+{"id":10,"expanded":false,"name":"Stage 5 - Pre-Boss Cutscene","order":5,"parentId":0,"scrollX":810.5,"scrollY":543},
+{"id":11,"expanded":true,"name":"Boss battle hades","order":11,"parentId":0,"scrollX":818.5,"scrollY":448},
+{"id":12,"expanded":true,"name":"Cutscenes","order":12,"parentId":0,"scrollX":973.1999999999999,"scrollY":527.4},
+{"id":13,"expanded":true,"name":"Hades pre boss cutscene","order":10,"parentId":0,"scrollX":982.8,"scrollY":527.4},
+{"id":14,"expanded":true,"name":"Conclusion","order":14,"parentId":16,"scrollX":810.5,"scrollY":527},
+{"id":15,"expanded":false,"name":"Interim","order":17,"parentId":0,"scrollX":819,"scrollY":478},
+{"id":16,"expanded":true,"name":"Zeus Battle","order":13,"parentId":0,"scrollX":973.1999999999999,"scrollY":527.4},
+{"id":17,"expanded":false,"name":"Pre-Zeus","order":15,"parentId":0,"scrollX":810.5,"scrollY":547},
+{"id":18,"expanded":false,"name":"Pre-Tutorial","order":16,"parentId":0,"scrollX":818.5,"scrollY":448},
+{"id":19,"expanded":true,"name":"TransitionMapForBossRetry","order":18,"parentId":0,"scrollX":973.1999999999999,"scrollY":527.4},
+{"id":20,"expanded":false,"name":"Poseidon Boss Transition","order":20,"parentId":0,"scrollX":810.5,"scrollY":653}
+]
