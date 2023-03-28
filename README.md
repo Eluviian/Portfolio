@@ -4,9 +4,9 @@ Bayley Sapara's Portfolio
 This portfolio currently contains three items:
 
 
-Game made in RPGMaker - Crescendo
+Game made in Unity during a 48-hour game jam - Roots
 
-Android App made in Android Studio - RunQR
+Android app made in Android Studio - RunQR
 
 HTML pages for an experimental task - Spatial Foraging Task
 
