@@ -3,10 +3,11 @@ Bayley Sapara's Portfolio
 
 This portfolio currently contains three items:
 
+1) HTML pages for an experimental task - Spatial Foraging Task
 
-Game made in Unity during a 48-hour game jam - Down to Earth
+2) Game made in Unity during a 48-hour game jam - Down to Earth
 
-Android app made in Android Studio - RunQR
+3) Android app made in Android Studio - RunQR
 
-HTML pages for an experimental task - Spatial Foraging Task
+
 
