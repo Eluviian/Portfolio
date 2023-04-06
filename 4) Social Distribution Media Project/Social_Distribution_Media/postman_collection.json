@@ -1,0 +1,1372 @@
+{
+	"info": {
+		"_postman_id": "374d7d35-633b-4ef3-b3f4-517fbc9008c4",
+		"name": "Project API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20178619"
+	},
+	"item": [
+		{
+			"name": "Authors",
+			"item": [
+				{
+					"name": "Get all authors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Check if response is an array",
+									"pm.test(\"Response is an array\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"array\");",
+									"});",
+									"",
+									"// Check if response array has at least one item",
+									"pm.test(\"Response array has at least one item\", function() {",
+									"    pm.expect(pm.response.json().length).to.be.above(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/authors",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get single author",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Check if response is a JSON object",
+									"pm.test(\"Response is a JSON object\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"object\");",
+									"});",
+									"",
+									"// Check if response object has the expected attributes and values",
+									"pm.test(\"Response object has expected attributes and values\", function() {",
+									"    var responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.have.property(\"type\").that.equals(\"author\");",
+									"    pm.expect(responseJson).to.have.property(\"id\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"host\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"displayName\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"url\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"github\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"profileImage\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"followers\").that.is.a(\"array\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update author details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"displayName\": \"John\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Need to run test for a username that doesn't already exist.",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(JSON.parse(pm.request.body.raw)[\"username\"]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"newtestuser123467\",\n    \"password\": \"newpassword123!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/auth/register",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Followers",
+			"item": [
+				{
+					"name": "Followers list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Check if response is an array",
+									"pm.test(\"Response is an array\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"array\");",
+									"});",
+									"",
+									"// Check if response array has at least one item",
+									"pm.test(\"Response array has at least one item\", function() {",
+									"    pm.expect(pm.response.json().length).to.be.above(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/followers",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"followers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Is follower",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Check if response object has the expected attributes and values",
+									"pm.test(\"Response object has expected attributes and values\", function() {",
+									"    var responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.have.property(\"isFollower\").that.is.a(\"boolean\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/followers/{{testAuthorId2}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"followers",
+								"{{testAuthorId2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add follower",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// Check if response is a JSON object",
+									"pm.test(\"Response is a JSON object\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"object\");",
+									"});",
+									"",
+									"// Check if response object has the expected attributes and values",
+									"pm.test(\"Response object has expected attributes and values\", function() {",
+									"    var responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.have.property(\"type\").that.equals(\"author\");",
+									"    pm.expect(responseJson).to.have.property(\"id\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"host\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"displayName\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"url\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"github\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"profileImage\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"followers\").that.is.a(\"array\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"author\",\n    \"id\": \"https://social-distribution-media.herokuapp.com/api/authors/{{testAuthorId2}}\",\n    \"host\": \"https://social-distribution-media.herokuapp.com\",\n    \"displayName\": \"testuser1\",\n    \"url\": \"https://social-distribution-media.herokuapp.com/authors/{{testAuthorId2}}\",\n    \"github\": \"\",\n    \"profileImage\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/followers/{{testAuthorId2}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"followers",
+								"{{testAuthorId2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove follower",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/followers/{{testAuthorId2}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"followers",
+								"{{testAuthorId2}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Follow Requests",
+			"item": [
+				{
+					"name": "Get requests to follow author",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Check if response is an array",
+									"pm.test(\"Response is an array\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"array\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId2}}/inbox/followers",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId2}}",
+								"inbox",
+								"followers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Request to follow",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"follow\",\n    \"summary\": \"eric wants to follow testuser1!\",\n    \"actor\": {\n            \"_id\": \"9610effa-1461-4d11-85fb-45c5d45e199d\",\n            \"type\": \"author\",\n            \"id\": \"https://social-distribution-media.herokuapp.com/api/authors/9610effa-1461-4d11-85fb-45c5d45e199d\",\n            \"host\": \"https://social-distribution-media.herokuapp.com\",\n            \"displayName\": \"John\",\n            \"url\": \"https://social-distribution-media.herokuapp.com/authors/9610effa-1461-4d11-85fb-45c5d45e199d\",\n            \"github\": \"\",\n            \"profileImage\": \"\"\n        },\n        \"object\": {\n            \"_id\": \"d5a7f5b6-e68c-4e9e-9612-74ddb6664cfc\",\n            \"type\": \"author\",\n            \"id\": \"https://social-distribution-media.herokuapp.com/api/authors/d5a7f5b6-e68c-4e9e-9612-74ddb6664cfc\",\n            \"host\": \"https://social-distribution-media.herokuapp.com\",\n            \"displayName\": \"testuser1\",\n            \"url\": \"https://social-distribution-media.herokuapp.com/authors/d5a7f5b6-e68c-4e9e-9612-74ddb6664cfc\",\n            \"github\": \"\",\n            \"profileImage\": \"\"\n        }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId2}}/inbox",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId2}}",
+								"inbox"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Get post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Check if response is a JSON object",
+									"pm.test(\"Response is a JSON object\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"object\");",
+									"});",
+									"",
+									"// Check if response object has the expected attributes and values",
+									"pm.test(\"Response object has expected attributes and values\", function() {",
+									"    var responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.have.property(\"type\").that.equals(\"post\");",
+									"    pm.expect(responseJson).to.have.property(\"id\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"title\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"source\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"origin\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"description\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"contentType\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"content\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"author\").that.is.a(\"object\");",
+									"    pm.expect(responseJson).to.have.property(\"categories\").that.is.a(\"array\");",
+									"    pm.expect(responseJson).to.have.property(\"count\").that.is.a(\"number\");",
+									"    pm.expect(responseJson).to.have.property(\"comments\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"commentsSrc\").that.is.a(\"object\");",
+									"    pm.expect(responseJson).to.have.property(\"published\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"visibility\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"unlisted\").that.is.a(\"boolean\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/posts/{{testPostId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"posts",
+								"{{testPostId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get recent posts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Check if response is an array",
+									"pm.test(\"Response is an array\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"array\");",
+									"});",
+									"",
+									"// Check if response array has at least one item",
+									"pm.test(\"Response array has at least one item\", function() {",
+									"    pm.expect(pm.response.json().length).to.be.above(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/posts",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create post with ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// Check if response is a JSON object",
+									"pm.test(\"Response is a JSON object\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"object\");",
+									"});",
+									"",
+									"// Check if response object has the expected attributes and values",
+									"pm.test(\"Response object has expected attributes and values\", function() {",
+									"    var responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.have.property(\"type\").that.equals(\"post\");",
+									"    pm.expect(responseJson).to.have.property(\"id\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"title\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"source\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"origin\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"description\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"contentType\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"content\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"author\").that.is.a(\"object\");",
+									"    pm.expect(responseJson).to.have.property(\"categories\").that.is.a(\"array\");",
+									"    pm.expect(responseJson).to.have.property(\"count\").that.is.a(\"number\");",
+									"    pm.expect(responseJson).to.have.property(\"comments\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"commentsSrc\").that.is.a(\"object\");",
+									"    pm.expect(responseJson).to.have.property(\"published\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"visibility\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"unlisted\").that.is.a(\"boolean\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Post Title\",\n    \"description\": \"Post Description\",\n    \"source\": \"https://google.com\",\n    \"origin\": \"https://google.com\",\n    \"contentType\": \"text/markdown\",\n    \"content\": \"# Hello world!\",\n    \"categories\": [\"category1\", \"category2\"],\n    \"visibility\": \"PUBLIC\",\n    \"unlisted\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/posts/8a4ec2ad-b26a-4bbc-9d36-1259e65c9d4c",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"posts",
+								"8a4ec2ad-b26a-4bbc-9d36-1259e65c9d4c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create post without ID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// Check if response is a JSON object",
+									"pm.test(\"Response is a JSON object\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"object\");",
+									"});",
+									"",
+									"// Check if response object has the expected attributes and values",
+									"pm.test(\"Response object has expected attributes and values\", function() {",
+									"    var responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.have.property(\"type\").that.equals(\"post\");",
+									"    pm.expect(responseJson).to.have.property(\"id\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"title\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"source\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"origin\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"description\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"contentType\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"content\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"author\").that.is.a(\"object\");",
+									"    pm.expect(responseJson).to.have.property(\"categories\").that.is.a(\"array\");",
+									"    pm.expect(responseJson).to.have.property(\"count\").that.is.a(\"number\");",
+									"    pm.expect(responseJson).to.have.property(\"comments\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"commentsSrc\").that.is.a(\"object\");",
+									"    pm.expect(responseJson).to.have.property(\"published\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"visibility\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"unlisted\").that.is.a(\"boolean\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Post Title\",\n    \"description\": \"Post Description\",\n    \"source\": \"https://google.com\",\n    \"origin\": \"https://google.com\",\n    \"contentType\": \"text/markdown\",\n    \"content\": \"# Hello world!\",\n    \"categories\": [\"category1\", \"category2\"],\n    \"visibility\": \"PUBLIC\",\n    \"unlisted\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/posts",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"New title!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/posts/{{testPostId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"posts",
+								"{{testPostId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/posts/8a4ec2ad-b26a-4bbc-9d36-1259e65c9d4c",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"posts",
+								"8a4ec2ad-b26a-4bbc-9d36-1259e65c9d4c"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inbox",
+			"item": [
+				{
+					"name": "Clear inbox",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/inbox",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"inbox"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Share a post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Check if response is a JSON object",
+									"pm.test(\"Response is a JSON object\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"object\");",
+									"});",
+									"",
+									"// Check if response object has the expected attributes and values",
+									"pm.test(\"Response object has expected attributes and values\", function() {",
+									"    var responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.have.property(\"type\").that.equals(\"post\");",
+									"    pm.expect(responseJson).to.have.property(\"id\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"title\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"source\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"origin\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"description\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"contentType\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"content\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"author\").that.is.a(\"object\");",
+									"    pm.expect(responseJson).to.have.property(\"categories\").that.is.a(\"array\");",
+									"    pm.expect(responseJson).to.have.property(\"count\").that.is.a(\"number\");",
+									"    pm.expect(responseJson).to.have.property(\"comments\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"commentsSrc\").that.is.a(\"object\");",
+									"    pm.expect(responseJson).to.have.property(\"published\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"visibility\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"unlisted\").that.is.a(\"boolean\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"_id\": \"8a4ec2ad-b26a-4bbc-9d36-1259e65c9d4b\",\n    \"type\": \"post\",\n    \"id\": \"https://social-distribution-media.herokuapp.com/api/authors/9610effa-1461-4d11-85fb-45c5d45e199d/posts/8a4ec2ad-b26a-4bbc-9d36-1259e65c9d4b\",\n    \"title\": \"New title!\",\n    \"source\": \"https://google.com\",\n    \"origin\": \"https://google.com\",\n    \"description\": \"Post Description\",\n    \"contentType\": \"text/markdown\",\n    \"content\": \"# Hello world!\\nHow are you today?\",\n    \"author\": {\n        \"_id\": \"9610effa-1461-4d11-85fb-45c5d45e199d\",\n        \"id\": \"https://social-distribution-media.herokuapp.com/api/authors/9610effa-1461-4d11-85fb-45c5d45e199d\",\n        \"url\": \"https://social-distribution-media.herokuapp.com/authors/9610effa-1461-4d11-85fb-45c5d45e199d\",\n        \"host\": \"https://social-distribution-media.herokuapp.com\",\n        \"displayName\": \"eric\",\n        \"github\": \"\",\n        \"profileImage\": \"\",\n        \"user\": 32,\n        \"followers\": [\n            \"d5a7f5b6-e68c-4e9e-9612-74ddb6664cfc\"\n        ],\n        \"following\": [\n            \"d5a7f5b6-e68c-4e9e-9612-74ddb6664cfc\"\n        ]\n    },\n    \"categories\": [\n        \"category1\",\n        \"category2\"\n    ],\n    \"count\": 0,\n    \"comments\": \"https://social-distribution-media.herokuapp.com/api/authors/9610effa-1461-4d11-85fb-45c5d45e199d/posts/8a4ec2ad-b26a-4bbc-9d36-1259e65c9d4b/comments\",\n    \"commentsSrc\": {},\n    \"published\": \"2023-03-08T18:48:07.434415Z\",\n    \"visibility\": \"PUBLIC\",\n    \"unlisted\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/inbox",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"inbox"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Share a comment (WIP)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"like\",\n    \"summary\": \"Test user likes your post!\",\n    \"author\": {\n        \"type\": \"author\",\n        \"id\": \"https://social-distribution-media.herokuapp.com/api/authors/d294d9dd-225a-44c8-af0f-727c34f282e6\",\n        \"host\": \"https://social-distribution-media.herokuapp.com\",\n        \"displayName\": \"testuser\",\n        \"url\": \"https://social-distribution-media.herokuapp.com/authors/d294d9dd-225a-44c8-af0f-727c34f282e6\",\n        \"github\": \"\",\n        \"profileImage\": \"\"\n    },\n    \"object\": \"https://social-distribution-media.herokuapp.com/api/authors/d294d9dd-225a-44c8-af0f-727c34f282e6/posts/67331d96-321b-4e15-b438-c568c24aed66\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/inbox",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"inbox"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get inbox",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Check if response is a JSON object",
+									"pm.test(\"Response is a JSON object\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"object\");",
+									"});",
+									"",
+									"// Check if response object has the expected attributes and values",
+									"pm.test(\"Response object has expected attributes and values\", function() {",
+									"    var responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.have.property(\"type\").that.equals(\"inbox\");",
+									"    pm.expect(responseJson).to.have.property(\"author\").that.is.a(\"object\");",
+									"    pm.expect(responseJson).to.have.property(\"items\").that.is.a(\"array\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/inbox",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"inbox"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Get comments on post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Check if response is an array",
+									"pm.test(\"Response is an array\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"array\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/posts/{{testPostId}}/comments",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"posts",
+								"{{testPostId}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add comment to post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// Check if response is a JSON object",
+									"pm.test(\"Response is a JSON object\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"object\");",
+									"});",
+									"",
+									"// Check if response object has the expected attributes and values",
+									"pm.test(\"Response object has expected attributes and values\", function() {",
+									"    var responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.have.property(\"type\").that.equals(\"comment\");",
+									"    pm.expect(responseJson).to.have.property(\"id\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"author\").that.is.a(\"object\");",
+									"    pm.expect(responseJson).to.have.property(\"comment\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"contentType\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"contentType\").that.is.a(\"string\");",
+									"    pm.expect(responseJson).to.have.property(\"published\").that.is.a(\"string\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\": \"Comment from postman!\",\n    \"contentType\": \"text/plain\",\n    \"author\": {\n        \"type\": \"author\",\n        \"id\": \"https://social-distribution-media.herokuapp.com/api/authors/{{testAuthorId2}}\",\n        \"host\": \"https://social-distribution-media.herokuapp.com\",\n        \"displayName\": \"testuser1\",\n        \"url\": \"https://social-distribution-media.herokuapp.com/authors/{{testAuthorId2}}\",\n        \"github\": \"\",\n        \"profileImage\": \"\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/posts/{{testPostId}}/comments",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"posts",
+								"{{testPostId}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Likes",
+			"item": [
+				{
+					"name": "Get likes by author (WIP)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/likes",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"likes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get post likes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Check if response is an array",
+									"pm.test(\"Response is an array\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"array\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/posts/{{testPostId}}/likes",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"posts",
+								"{{testPostId}}",
+								"likes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get comment likes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Check if response is an array",
+									"pm.test(\"Response is an array\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"array\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/posts/{{testPostId}}/comments/{{testCommentId}}/likes",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"posts",
+								"{{testPostId}}",
+								"comments",
+								"{{testCommentId}}",
+								"likes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like a comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// Check if response is a JSON object",
+									"pm.test(\"Response is a JSON object\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"object\");",
+									"});",
+									"",
+									"// Check if response object has the expected attributes and values",
+									"pm.test(\"Response object has expected attributes and values\", function() {",
+									"    var responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.have.property(\"type\").that.equals(\"Like\");",
+									"    pm.expect(responseJson).to.have.property(\"author\").that.is.a(\"object\");",
+									"    pm.expect(responseJson).to.have.property(\"object\").that.is.a(\"string\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"like\",\n    \"summary\": \"Test user likes your comment!\",\n    \"author\": {\n        \"type\": \"author\",\n        \"id\": \"https://social-distribution-media.herokuapp.com/api/authors/{{testAuthorId2}}\",\n        \"host\": \"https://social-distribution-media.herokuapp.com\",\n        \"displayName\": \"testuser1\",\n        \"url\": \"https://social-distribution-media.herokuapp.com/authors/{{testAuthorId2}}\",\n        \"github\": \"\",\n        \"profileImage\": \"\"\n    },\n    \"object\": \"https://social-distribution-media.herokuapp.com/api/authors/{{testAuthorId}}/posts/{{testPostId}}/comments/{{testCommentId}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/inbox",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"inbox"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like a post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// Check if response is a JSON object",
+									"pm.test(\"Response is a JSON object\", function() {",
+									"    pm.expect(pm.response.json()).to.be.an(\"object\");",
+									"});",
+									"",
+									"// Check if response object has the expected attributes and values",
+									"pm.test(\"Response object has expected attributes and values\", function() {",
+									"    var responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.have.property(\"type\").that.equals(\"Like\");",
+									"    pm.expect(responseJson).to.have.property(\"author\").that.is.a(\"object\");",
+									"    pm.expect(responseJson).to.have.property(\"object\").that.is.a(\"string\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"like\",\n    \"summary\": \"Test user likes your post!\",\n    \"author\": {\n        \"type\": \"author\",\n        \"id\": \"https://social-distribution-media.herokuapp.com/api/authors/{{testAuthorId2}}\",\n        \"host\": \"https://social-distribution-media.herokuapp.com\",\n        \"displayName\": \"testuser1\",\n        \"url\": \"https://social-distribution-media.herokuapp.com/authors/{{testAuthorId2}}\",\n        \"github\": \"\",\n        \"profileImage\": \"\"\n    },\n    \"object\": \"https://social-distribution-media.herokuapp.com/api/authors/{{testAuthorId}}/posts/{{testPostId}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/authors/{{testAuthorId}}/inbox",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{testAuthorId}}",
+								"inbox"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "testuser1",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "testpwdwow",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "http://127.0.0.1:8000",
+			"type": "string"
+		},
+		{
+			"key": "testAuthorId",
+			"value": "9610effa-1461-4d11-85fb-45c5d45e199d",
+			"type": "string"
+		},
+		{
+			"key": "testPostId",
+			"value": "8a4ec2ad-b26a-4bbc-9d36-1259e65c9d4b",
+			"type": "string"
+		},
+		{
+			"key": "testAuthorId2",
+			"value": "d5a7f5b6-e68c-4e9e-9612-74ddb6664cfc",
+			"type": "string"
+		},
+		{
+			"key": "testCommentId",
+			"value": "6309426a-fb1d-4535-8166-c55115e2a7d9",
+			"type": "string"
+		}
+	]
+}
